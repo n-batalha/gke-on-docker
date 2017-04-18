@@ -1,0 +1,26 @@
+image: gcr.io/infra-164917/kube-on-docker:latest
+
+stages:
+  - build
+  - release
+
+before_script:
+  - apt-get update && apt-get install -y make
+  - echo $GCLOUD_SERVICE_KEY > /tmp/gcloud-service-key.json
+  - gcloud auth activate-service-account $GCLOUD_SVC_ACCOUNT_EMAIL --project $GCLOUD_PROJECT --key-file=/tmp/gcloud-service-key.json
+  - gcloud config set project $GCLOUD_PROJECT
+  - gcloud container clusters get-credentials $CLUSTER_NAME -z $ZONE
+
+build:
+    stage: build
+    script:
+      - make push
+
+push_prod:
+    stage: release
+    script:
+      - make update
+    environment: prod
+    when: manual
+    only:
+      - master

@@ -1,15 +1,16 @@
-image: gcr.io/infra-164917/kube-on-docker:latest
+image: docker.io/nbatalha/kube-on-docker:latest
+
+# See
+# https://docs.gitlab.com/ce/ci/docker/using_docker_build.html#use-docker-in-docker-executor
+services:
+  - docker:dind
 
 stages:
   - build
   - release
 
 before_script:
-  - apt-get update && apt-get install -y make
-  - echo $GCLOUD_SERVICE_KEY > /tmp/gcloud-service-key.json
-  - gcloud auth activate-service-account $GCLOUD_SVC_ACCOUNT_EMAIL --project $GCLOUD_PROJECT --key-file=/tmp/gcloud-service-key.json
-  - gcloud config set project $GCLOUD_PROJECT
-  - gcloud container clusters get-credentials $CLUSTER_NAME -z $ZONE
+  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
 build:
     stage: build
@@ -19,7 +20,7 @@ build:
 push_prod:
     stage: release
     script:
-      - make update
+      - make release
     environment: prod
     when: manual
     only:

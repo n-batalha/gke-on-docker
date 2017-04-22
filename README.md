@@ -12,9 +12,7 @@ on your Gitlab CI `image` tags, or build one yourself (instructions below to set
 ## Development instructions
 
 1. Create a Docker Hub account
-2. On the Gitlab CI setup the secrets for:
-  * `DOCKER_USER` 
-  * `DOCKER_PASSWORD` (for Docker Hub)
+2. On the Gitlab CI setup the secret for:
   * `DOCKER_AUTH_CONFIG` (The auth variable of Docker Hub in `~/.docker/config.json`, see [here](https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/configuration/advanced-configuration.md#using-a-private-container-registry))
 3. Build and push once locally to make the image available for Gitlab CI
 4. Enjoy

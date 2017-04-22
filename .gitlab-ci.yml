@@ -10,7 +10,8 @@ stages:
   - release
 
 before_script:
-  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  - mkdir $HOME/.docker
+  - echo $DOCKER_AUTH_CONFIG > $HOME/.docker/config.json
 
 build:
     stage: build

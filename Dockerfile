@@ -3,13 +3,13 @@
 #  https://hub.docker.com/r/google/cloud-sdk/
 
 FROM docker:latest
-RUN apk add --update ca-certificates \
- && apk add --update -t deps curl \
- && apk add make \
+RUN apk add --update ca-certificates curl \
+    make \
     unzip \
     php5-mysql \
     php5-cli \
     php5-cgi \
+    gettext \
     # Install community one only if needed
     # openjdk-7-jre-headless \
     openssh-client \
@@ -18,7 +18,6 @@ RUN apk add --update ca-certificates \
     python \
     python-dev \
     py-pip \
- && apk del --purge deps \
  && rm /var/cache/apk/*
 
 # Install the Google Cloud SDK.
